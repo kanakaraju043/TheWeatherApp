@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 import iAd
-class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource{
+import CoreLocation
+class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,CLLocationManagerDelegate{
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var countryNameLabel: UILabel!
@@ -28,24 +29,73 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     @IBOutlet weak var banner: ADBannerView!
     @IBOutlet weak var tableView: UITableView!
 
+    var currentWeather : CurrentWeather?
+    
+    private let locationManager = CLLocationManager()
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.whiteColor()
+        getLocationData()
+      
         
-        
-        let apiKey = "e86f277ef313b7554a37049b02d3224f"
-        let url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=\(apiKey)"
-        
-        super.viewDidLoad()
-        Alamofire.request(.GET ,url).responseJSON { (response) in
-            print(response.result.value)
+
+   
+       
+    
+    }
+    func updateUI(){
+        if let currentWeather = currentWeather {
+            currentWeather.getCurrenWeatherData({
+                self.cityNameLabel.text = self.currentWeather!.city
+                self.countryNameLabel.text = self.currentWeather!.country
+                if let imageString = weatherImageDict["\(currentWeather.iconId)"] {
+                    self.mainTempImage.image = UIImage(named: imageString)
+                }
+                self.mainTempLabel.text = currentWeather.temperature
+                self.weatherDescriptionLabel.text = currentWeather.weatherDescription
+                self.windSpeedLabel.text = currentWeather.windData
+                self.humidityLabel.text = "\(currentWeather.humidity)%"
+                self.atmosphericPressureLabel.text = "\(currentWeather.pressure)mb"
+                self.highLowLabel.text = "\(currentWeather.maxTemperature)/\(currentWeather.minTemperature)"
+                self.cloudPercentageLabel.text = "\(currentWeather.cloudPercent)%"
+            })
+            
+            
+        }
+
+    }
+    
+    private func getLocationData() {
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
+        }
+    }
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = manager.location?.coordinate {
+            
+            let latitude = location.latitude
+            let longitude = location.longitude
+            print(latitude)
+            ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
+            currentWeather = CurrentWeather(url: ApiCall.CurrentWeatherWithLocation)
+            updateUI()
         }
     }
 
     
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print(error.debugDescription)
+    }
     //Three hours - TableView
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
