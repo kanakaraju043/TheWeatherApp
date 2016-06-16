@@ -13,7 +13,6 @@
 		999A08F31D0FF07A0065C9BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 999A08F21D0FF07A0065C9BA /* Assets.xcassets */; };
 		999A08F61D0FF07A0065C9BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 999A08F41D0FF07A0065C9BA /* LaunchScreen.storyboard */; };
 		99D40DA31D1233FB0011E1E8 /* Pods_The_Weather_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; };
-		99D40DA61D1235150011E1E8 /* Pods_The_Weather_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; };
 		99D40DA71D1235150011E1E8 /* Pods_The_Weather_App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		99F0E0A41D1193CF0003B581 /* DailyForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0A31D1193CF0003B581 /* DailyForecastTableViewCell.swift */; };
 		99F0E0A61D11989A0003B581 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0A51D11989A0003B581 /* Constants.swift */; };
@@ -65,7 +64,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				99D40DA31D1233FB0011E1E8 /* Pods_The_Weather_App.framework in Frameworks */,
-				99D40DA61D1235150011E1E8 /* Pods_The_Weather_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

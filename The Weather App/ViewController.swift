@@ -11,7 +11,7 @@ import Alamofire
 import iAd
 import CoreLocation
 import MapKit
-class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
+class ViewController: UIViewController{
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var countryNameLabel: UILabel!
@@ -32,37 +32,43 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
 
     var currentWeather : CurrentWeather?
     var threeHoursWeather : ThreeHoursWeather?
-      var isUpdated = false
-     var locationManager : CLLocationManager!
-
+    var isUpdated = false
+    var locationManager : CLLocationManager!
+    var startingLocation : CLLocation!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.itemSize = CGSize(width: 80, height: 100)
-        flowLayout.scrollDirection = .Horizontal
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.whiteColor()
-        collectionView.collectionViewLayout = flowLayout
         
-      
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-      
+        locationManager.requestLocation()
         
-
-   
-       
-    
+    }
+    func updateUIWithLocalData() {
+        func getWeekDayName() -> String {
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "EEEE"
+            return dateFormatter.stringFromDate(NSDate())
+        }
+        
+        func getTimeInLocalFormat() -> String {
+            return NSDateFormatter.localizedStringFromDate(NSDate(), dateStyle: .NoStyle, timeStyle: .ShortStyle)
+        }
+        
+        self.lastUpdatedDayLabel.text = getWeekDayName()
+        self.lastUpdatedTimeLabel.text = getTimeInLocalFormat()
     }
     func updateUI(){
+        updateUIWithLocalData()
         if let currentWeather = currentWeather {
             currentWeather.getCurrenWeatherData({
                 self.cityNameLabel.text = self.currentWeather!.city
@@ -95,10 +101,9 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     func getCityName(location  :CLLocation,completion : (cityName : String)->()){
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
-            if let placemarks = placemarks {
-                let placemark = placemarks[0]
+            if let placemark = placemarks?.first {
                 if let cityName = placemark.administrativeArea {
-                   print(cityName)
+                    print(cityName)
                     completion(cityName: cityName)
                 }
             }
@@ -106,37 +111,8 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     
     }
 
-    //Three hours - TableView
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("tableViewCell")!
-        return cell
-    }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    //Daily Forecast - CollectionView
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if threeHoursWeather != nil {
-           return (threeHoursWeather?.threeHoursWeatherDatas.count)!
-        }else {
-            return 0
-        }
-        
-    }
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! ThreeHoursFCollectionViewCell
-            cell.configureCell((threeHoursWeather?.threeHoursWeatherDatas[indexPath.row])!)
-        return cell
-    }
-    
    
+    
     func bannerViewDidLoadAd(banner: ADBannerView!) {
         banner.hidden = false
     }
@@ -150,12 +126,13 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
 
 }
 
-
+//------------------------------------------------------------------------
 extension ViewController : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-
-        if let location = manager.location {
+        
+        if let location = locations.first{
             if !isUpdated {
+                print("______________________________________________________________")
                 let latitude = location.coordinate.latitude
                 let longitude = location.coordinate.longitude
                 getCityName(location, completion: { (cityName) in
@@ -163,16 +140,18 @@ extension ViewController : CLLocationManagerDelegate {
                     self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
                     ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
                     self.threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
-                    print("a")
+        
                      self.isUpdated = true
                     self.updateUI()
                 })
-               
-
-                updateUI()
             }
         
-            
+        }
+        if startingLocation == nil {
+            startingLocation = locations.first
+        }else {
+        
+        
         }
     }
     
@@ -182,10 +161,49 @@ extension ViewController : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
-            locationManager.startUpdatingLocation()
+            locationManager.requestLocation()
         }
     }
     
     
 }
 
+//------------------------------------------------------------------------
+extension ViewController : UITableViewDelegate , UITableViewDataSource {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("tableViewCell")!
+        return cell
+    }
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
+    }
+
+}
+
+extension ViewController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if threeHoursWeather != nil {
+            return (threeHoursWeather?.threeHoursWeatherDatas.count)!
+        }else {
+            return 0
+        }
+        
+    }
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! ThreeHoursFCollectionViewCell
+        cell.configureCell((threeHoursWeather?.threeHoursWeatherDatas[indexPath.row])!)
+        return cell
+    }
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        return CGSizeMake(80, 100)
+    }
+    
+}
