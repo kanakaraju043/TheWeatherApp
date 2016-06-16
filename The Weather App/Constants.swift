@@ -62,13 +62,14 @@ struct ApiCall {
     private static let Weather = "weather?"
     private static let Forecast = "forecast?"
     private static let DailyForecast = "daily?"
-    static var City = "q=osaka"
+    static var City = "q="
     static var Location = ""
     private static let KeyPrefix = "&APPID="
     private static let APIKey = "e86f277ef313b7554a37049b02d3224f"
-    
+ 
    
     static var CurrentWeather: String {
+        
         return BaseUrl + Weather + City + KeyPrefix + APIKey
     }
     static var CurrentWeatherWithLocation: String {
@@ -82,7 +83,7 @@ struct ApiCall {
         return BaseUrl + Forecast + Location + KeyPrefix + APIKey
     }
     
-    
+   
     static var DailyForecastWithLocation: String {
         return BaseUrl + DailyForecast + Location + KeyPrefix + APIKey
     }

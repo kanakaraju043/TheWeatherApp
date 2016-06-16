@@ -9,10 +9,10 @@
 import Foundation
 import Alamofire
 class ThreeHoursWeather : Weather {
-    private(set) var dateWithTime: String!
-    private(set) var imageIconId: String!
-    private var temperatureK: Int!
-    var threeHoursWeatherDatas = [ThreeHourForecastData]()
+    
+   private(set) lazy var threeHoursWeatherDatas = [ThreeHourForecastData]()
+    
+    
     func getThreeHoursWeatherData(completion : DownloadCompleted) {
         let counter = 16
         Alamofire.request(.GET,url).responseJSON { (response) in
@@ -41,9 +41,7 @@ class ThreeHoursWeather : Weather {
                         }
                         
                         let  forecast = ThreeHourForecastData(dateTime: formattedTime, imageId: imageId, tempK: temperature)
-                        print(formattedTime)
-                        print(imageId)
-                        print(temperature)
+                       
                         self.threeHoursWeatherDatas.append(forecast)
                         
                     }
@@ -66,19 +64,7 @@ class ThreeHoursWeather : Weather {
         dateFormatter.dateFormat = "EEE"
         let dayName = dateFormatter.stringFromDate(readableDateTime)
         
-        /*  **********************************************
-         GETTING THE DESIRED TIME FORMAT
-         Getting the time format is quite convoluted.
-         The steps are explained below:
-         1.  Make a formatter with a valid time format to convert the localTime
-         string back into an NSDate.
-         2.  Convert the string back into an NSDate.
-         4.  If the check passes, change the format to the desired format
-         5.  Create a string from the NSDate using the new format.
-         **********************************************  */
-        
-        let localTime = NSDateFormatter.localizedStringFromDate(readableDateTime,
-                                                                dateStyle: .NoStyle, timeStyle: .ShortStyle)
+        let localTime = NSDateFormatter.localizedStringFromDate(readableDateTime,dateStyle: .NoStyle, timeStyle: .ShortStyle)
         
         let timeFormatter = NSDateFormatter()
         var stringToDateFormat = ""

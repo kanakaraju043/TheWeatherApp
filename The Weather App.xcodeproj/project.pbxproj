@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		629AA8886EE981EE10DE5F99 /* Pods_The_Weather_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; };
 		999A08EC1D0FF07A0065C9BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */; };
 		999A08EE1D0FF07A0065C9BA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999A08ED1D0FF07A0065C9BA /* ViewController.swift */; };
 		999A08F11D0FF07A0065C9BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 999A08EF1D0FF07A0065C9BA /* Main.storyboard */; };
 		999A08F31D0FF07A0065C9BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 999A08F21D0FF07A0065C9BA /* Assets.xcassets */; };
 		999A08F61D0FF07A0065C9BA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 999A08F41D0FF07A0065C9BA /* LaunchScreen.storyboard */; };
+		99D40DA31D1233FB0011E1E8 /* Pods_The_Weather_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; };
+		99D40DA61D1235150011E1E8 /* Pods_The_Weather_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; };
+		99D40DA71D1235150011E1E8 /* Pods_The_Weather_App.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		99F0E0A41D1193CF0003B581 /* DailyForecastTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0A31D1193CF0003B581 /* DailyForecastTableViewCell.swift */; };
 		99F0E0A61D11989A0003B581 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0A51D11989A0003B581 /* Constants.swift */; };
 		99F0E0A81D1198E70003B581 /* ThreeHoursFCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0A71D1198E70003B581 /* ThreeHoursFCollectionViewCell.swift */; };
@@ -21,6 +23,20 @@
 		99F0E0AF1D1209720003B581 /* DailyWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0AE1D1209720003B581 /* DailyWeather.swift */; };
 		99F0E0B31D120BEF0003B581 /* ThreeHoursWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F0E0B21D120BEF0003B581 /* ThreeHoursWeather.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		99D40DA81D1235150011E1E8 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				99D40DA71D1235150011E1E8 /* Pods_The_Weather_App.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Weather_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +47,7 @@
 		999A08F21D0FF07A0065C9BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		999A08F51D0FF07A0065C9BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		999A08F71D0FF07A0065C9BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		99D40DA01D1233FB0011E1E8 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Alamofire.framework; path = "/Users/yusuf_kildan/Library/Developer/Xcode/DerivedData/The_Weather_App-fbwbbrrgnxeaepatshfpjuwyiorf/Build/Products/Debug-iphoneos/Alamofire.framework"; sourceTree = "<absolute>"; };
 		99F0E0A31D1193CF0003B581 /* DailyForecastTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyForecastTableViewCell.swift; sourceTree = "<group>"; };
 		99F0E0A51D11989A0003B581 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		99F0E0A71D1198E70003B581 /* ThreeHoursFCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreeHoursFCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -47,7 +64,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				629AA8886EE981EE10DE5F99 /* Pods_The_Weather_App.framework in Frameworks */,
+				99D40DA31D1233FB0011E1E8 /* Pods_The_Weather_App.framework in Frameworks */,
+				99D40DA61D1235150011E1E8 /* Pods_The_Weather_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +84,7 @@
 		999A08DF1D0FF07A0065C9BA = {
 			isa = PBXGroup;
 			children = (
+				99D40DA01D1233FB0011E1E8 /* Alamofire.framework */,
 				999A08EA1D0FF07A0065C9BA /* The Weather App */,
 				999A08E91D0FF07A0065C9BA /* Products */,
 				2319DA3716475546B0013E56 /* Pods */,
@@ -154,6 +173,7 @@
 				999A08E61D0FF07A0065C9BA /* Resources */,
 				B320D1F7AB57F4AD11B55AF7 /* Embed Pods Frameworks */,
 				839B3A91CB9F4EE45D9D2A62 /* Copy Pods Resources */,
+				99D40DA81D1235150011E1E8 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -390,7 +410,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "The Weather App/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = " @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yusufkildan.The-Weather-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -403,7 +423,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "The Weather App/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = " @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yusufkildan.The-Weather-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

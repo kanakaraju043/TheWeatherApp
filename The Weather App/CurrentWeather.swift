@@ -70,8 +70,9 @@ class CurrentWeather : Weather {
     func getCurrenWeatherData(completion : DownloadCompleted){
         Alamofire.request(.GET,self.url).responseJSON { (response) in
             if let dict = response.result.value as? [String : AnyObject] {
-              
+                 print(dict)
                 if let main = dict["main"] as? [String : AnyObject] {
+                    
                     if let tempKelvin = main["temp"] as? Float {
                         self.tempKelvin = Int(tempKelvin)
                     }
@@ -120,6 +121,7 @@ class CurrentWeather : Weather {
                         self.windDirection = direction
                     }
                 }
+             
                  completion()
                 print("JSON datas parsed")
             }

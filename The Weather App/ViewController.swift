@@ -10,7 +10,8 @@ import UIKit
 import Alamofire
 import iAd
 import CoreLocation
-class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,CLLocationManagerDelegate{
+import MapKit
+class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,CLLocationManagerDelegate,UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var countryNameLabel: UILabel!
@@ -36,7 +37,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     private var ignoreReceivedLocation = false {
         didSet {
             if ignoreReceivedLocation == true {
-                NSTimer.scheduledTimerWithTimeInterval(3, target: self,
+                NSTimer.scheduledTimerWithTimeInterval(6, target: self,
                                                        selector: #selector(ViewController.resetLocationReceived), userInfo: nil, repeats: false)
             }
         }
@@ -47,10 +48,16 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.itemSize = CGSize(width: 80, height: 100)
+        flowLayout.scrollDirection = .Horizontal
         
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.collectionViewLayout = flowLayout
+        
+      
         getLocationData()
       
         
@@ -96,18 +103,36 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             locationManager.requestLocation()
         }
     }
+    func getCityName(location  :CLLocation,completion : (cityName : String)->()){
+        let geoCoder = CLGeocoder()
+        geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemarks = placemarks {
+                let placemark = placemarks[0]
+                if let cityName = placemark.administrativeArea {
+                   print(cityName)
+                    completion(cityName: cityName)
+                }
+            }
+        }
+    
+    }
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+       print("a")
         if ignoreReceivedLocation == false {
-            if let location = manager.location?.coordinate {
+            print("b")
+            if let location = manager.location {
+                 getCityName(location, completion: { (cityName) in
+                    
+                    ApiCall.City = "q=\(cityName)"
+                    self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
+                    self.updateUI()
+                 })
+                let latitude = location.coordinate.latitude
+                let longitude = location.coordinate.longitude
                 
-                let latitude = location.latitude
-                let longitude = location.longitude
-                print(latitude)
                 ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
-                currentWeather = CurrentWeather(url: ApiCall.CurrentWeatherWithLocation)
-                threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
-              //  ignoreReceivedLocation = true
-                print("Loc")
+                                threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
+               ignoreReceivedLocation = true
                 updateUI()
             }
         }
