@@ -10,6 +10,21 @@ import Foundation
 
 typealias DownloadCompleted = ()->()
 var isMetric = false
+struct ThreeHourForecastData {
+    private(set) var dateWithTime: String!
+    private(set) var imageIconId: String!
+    private var temperatureK: Int!
+    
+    var temperature: String! {
+        return "\(temperatureK)º"
+    }
+    
+    init(dateTime: String, imageId: String, tempK: Int) {
+        self.dateWithTime = dateTime
+        self.imageIconId = imageId
+        self.temperatureK = tempK
+    }
+}
 
 let weatherImageDict = [
     "01d" : "Sun",

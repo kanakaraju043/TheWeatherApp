@@ -30,8 +30,17 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
     @IBOutlet weak var tableView: UITableView!
 
     var currentWeather : CurrentWeather?
+    var threeHoursWeather : ThreeHoursWeather?
     
     private let locationManager = CLLocationManager()
+    private var ignoreReceivedLocation = false {
+        didSet {
+            if ignoreReceivedLocation == true {
+                NSTimer.scheduledTimerWithTimeInterval(3, target: self,
+                                                       selector: #selector(ViewController.resetLocationReceived), userInfo: nil, repeats: false)
+            }
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,6 +78,13 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
             
             
         }
+        
+        if let threeHoursWeather = threeHoursWeather{
+            threeHoursWeather.getThreeHoursWeatherData({ 
+                self.collectionView.reloadData()
+            })
+        
+        }
 
     }
     
@@ -81,15 +97,21 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         }
     }
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = manager.location?.coordinate {
-            
-            let latitude = location.latitude
-            let longitude = location.longitude
-            print(latitude)
-            ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
-            currentWeather = CurrentWeather(url: ApiCall.CurrentWeatherWithLocation)
-            updateUI()
+        if ignoreReceivedLocation == false {
+            if let location = manager.location?.coordinate {
+                
+                let latitude = location.latitude
+                let longitude = location.longitude
+                print(latitude)
+                ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
+                currentWeather = CurrentWeather(url: ApiCall.CurrentWeatherWithLocation)
+                threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
+              //  ignoreReceivedLocation = true
+                print("Loc")
+                updateUI()
+            }
         }
+       
     }
 
     
@@ -113,14 +135,31 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         return 1
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        if threeHoursWeather != nil {
+           return (threeHoursWeather?.threeHoursWeatherDatas.count)!
+        }else {
+            return 0
+        }
+        
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! ThreeHoursFCollectionViewCell
+            cell.configureCell((threeHoursWeather?.threeHoursWeatherDatas[indexPath.row])!)
         return cell
     }
     
+    func resetLocationReceived(){
+        ignoreReceivedLocation = false
+    }
     
+    func bannerViewDidLoadAd(banner: ADBannerView!) {
+        banner.hidden = false
+    }
+    
+    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
+        print(error.debugDescription)
+        banner.hidden = true
+    }
     
     
 
