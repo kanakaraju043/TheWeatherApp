@@ -11,7 +11,7 @@ import Alamofire
 import iAd
 import CoreLocation
 import MapKit
-class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,CLLocationManagerDelegate,UICollectionViewDelegateFlowLayout{
+class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource ,UICollectionViewDelegateFlowLayout{
     
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var countryNameLabel: UILabel!
@@ -32,16 +32,9 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
 
     var currentWeather : CurrentWeather?
     var threeHoursWeather : ThreeHoursWeather?
-    
-    private let locationManager = CLLocationManager()
-    private var ignoreReceivedLocation = false {
-        didSet {
-            if ignoreReceivedLocation == true {
-                NSTimer.scheduledTimerWithTimeInterval(6, target: self,
-                                                       selector: #selector(ViewController.resetLocationReceived), userInfo: nil, repeats: false)
-            }
-        }
-    }
+      var isUpdated = false
+     var locationManager : CLLocationManager!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,7 +51,10 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         collectionView.collectionViewLayout = flowLayout
         
       
-        getLocationData()
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
       
         
 
@@ -95,14 +91,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
 
     }
     
-    private func getLocationData() {
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.requestLocation()
-        }
-    }
+ 
     func getCityName(location  :CLLocation,completion : (cityName : String)->()){
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
@@ -116,33 +105,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         }
     
     }
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       print("a")
-        if ignoreReceivedLocation == false {
-            print("b")
-            if let location = manager.location {
-                 getCityName(location, completion: { (cityName) in
-                    
-                    ApiCall.City = "q=\(cityName)"
-                    self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
-                    self.updateUI()
-                 })
-                let latitude = location.coordinate.latitude
-                let longitude = location.coordinate.longitude
-                
-                ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
-                                threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
-               ignoreReceivedLocation = true
-                updateUI()
-            }
-        }
-       
-    }
 
-    
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        print(error.debugDescription)
-    }
     //Three hours - TableView
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -173,10 +136,7 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         return cell
     }
     
-    func resetLocationReceived(){
-        ignoreReceivedLocation = false
-    }
-    
+   
     func bannerViewDidLoadAd(banner: ADBannerView!) {
         banner.hidden = false
     }
@@ -186,7 +146,46 @@ class ViewController: UIViewController ,UITableViewDelegate,UITableViewDataSourc
         banner.hidden = true
     }
     
-    
+  
 
+}
+
+
+extension ViewController : CLLocationManagerDelegate {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+
+        if let location = manager.location {
+            if !isUpdated {
+                let latitude = location.coordinate.latitude
+                let longitude = location.coordinate.longitude
+                getCityName(location, completion: { (cityName) in
+                    ApiCall.City = "q=\(cityName)"
+                    self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
+                    ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
+                    self.threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
+                    print("a")
+                     self.isUpdated = true
+                    self.updateUI()
+                })
+               
+
+                updateUI()
+            }
+        
+            
+        }
+    }
+    
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+        print(error.debugDescription)
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedWhenInUse {
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    
 }
 

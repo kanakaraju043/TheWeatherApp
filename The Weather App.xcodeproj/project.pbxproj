@@ -197,6 +197,11 @@
 					999A08E71D0FF07A0065C9BA = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = TS6988L5X8;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};

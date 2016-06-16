@@ -23,6 +23,9 @@ class CurrentWeather : Weather {
     
     private var windSpeedMetric: Double!
     private var windSpeed: String {
+        if windSpeedMetric == nil {
+            return ""
+        }
         return isMetric ? "\(windSpeedMetric)ms" :
             String(format: "%.1f", Double(windSpeedMetric * 3600) / 1609.344) + "mh"
     }
