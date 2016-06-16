@@ -29,9 +29,10 @@ class ViewController: UIViewController{
     @IBOutlet weak var metricSwitch: UISwitch!
     @IBOutlet weak var banner: ADBannerView!
     @IBOutlet weak var tableView: UITableView!
-
+    
     var currentWeather : CurrentWeather?
     var threeHoursWeather : ThreeHoursWeather?
+    var dailyWeather : DailyWeather?
     var isUpdated = false
     var locationManager : CLLocationManager!
     var startingLocation : CLLocation!
@@ -89,15 +90,21 @@ class ViewController: UIViewController{
         }
         
         if let threeHoursWeather = threeHoursWeather{
-            threeHoursWeather.getThreeHoursWeatherData({ 
+            threeHoursWeather.getThreeHoursWeatherData({
                 self.collectionView.reloadData()
             })
-        
+            
         }
-
+        
+        if let dailyWeather = dailyWeather {
+            dailyWeather.getDailyWeatherData({
+                self.tableView.reloadData()
+            })
+        }
+        
     }
     
- 
+    
     func getCityName(location  :CLLocation,completion : (cityName : String)->()){
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(location) { (placemarks, error) in
@@ -108,10 +115,10 @@ class ViewController: UIViewController{
                 }
             }
         }
-    
+        
     }
-
-   
+    
+    
     
     func bannerViewDidLoadAd(banner: ADBannerView!) {
         banner.hidden = false
@@ -122,8 +129,8 @@ class ViewController: UIViewController{
         banner.hidden = true
     }
     
-  
-
+    
+    
 }
 
 //------------------------------------------------------------------------
@@ -140,18 +147,19 @@ extension ViewController : CLLocationManagerDelegate {
                     self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
                     ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
                     self.threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
-        
-                     self.isUpdated = true
+                    self.dailyWeather = DailyWeather(url: ApiCall.DailyForecastWithLocation)
+                    
+                    self.isUpdated = true
                     self.updateUI()
                 })
             }
-        
+            
         }
         if startingLocation == nil {
             startingLocation = locations.first
         }else {
-        
-        
+            
+            
         }
     }
     
@@ -174,17 +182,26 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
         return 1
     }
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("tableViewCell")!
+        let cell = tableView.dequeueReusableCellWithIdentifier("tableViewCell") as! DailyForecastTableViewCell
+        if let data = dailyWeather?.dailyForecastDatas[indexPath.row] {
+            cell.configureCell(data)
+        }
+     
         return cell
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        if dailyWeather != nil {
+            return (dailyWeather?.dailyForecastDatas.count)!
+            
+        }else {
+            return 1
+        }
     }
-
+    
 }
 
 extension ViewController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
-
+    
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -192,13 +209,16 @@ extension ViewController : UICollectionViewDelegate,UICollectionViewDataSource,U
         if threeHoursWeather != nil {
             return (threeHoursWeather?.threeHoursWeatherDatas.count)!
         }else {
-            return 0
+            return 1
         }
         
     }
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("collectionViewCell", forIndexPath: indexPath) as! ThreeHoursFCollectionViewCell
-        cell.configureCell((threeHoursWeather?.threeHoursWeatherDatas[indexPath.row])!)
+        if let data = threeHoursWeather?.threeHoursWeatherDatas[indexPath.row] {
+            cell.configureCell(data)
+        }
+      
         return cell
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

@@ -16,13 +16,27 @@ class DailyForecastTableViewCell: UITableViewCell {
     @IBOutlet weak var lowTemperature: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+      
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
-
+    
+    func configureCell(dailyForecastData : DailyForecastData) {
+        if let hightTemperature = dailyForecastData.tempMax {
+            self.hightTemperature.text = hightTemperature
+        }
+        if let dayName = dailyForecastData.dayName {
+            self.dayNameLabel.text = dayName
+        }
+        if let lowTemperature = dailyForecastData.tempMin {
+            self.lowTemperature.text = lowTemperature
+        }
+        if let iconId = dailyForecastData.imageIconId {
+            let icon = weatherImageDict[iconId]!
+            self.weatherImage.image = UIImage(named: icon)
+        }
+    }
 }

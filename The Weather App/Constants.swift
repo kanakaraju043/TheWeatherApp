@@ -26,6 +26,27 @@ struct ThreeHourForecastData {
     }
 }
 
+struct DailyForecastData {
+    private(set) var dayName : String!
+    private(set) var imageIconId : String!
+    private var _tempMin : Int!
+    private var _tempMax : Int!
+    
+    var tempMin : String? {
+        return "\(_tempMin)"
+    }
+    var tempMax : String?{
+        return "\(_tempMax)"
+    }
+    
+    init(dayName : String,imageIconId : String , tempMax : Int ,tempMin : Int) {
+        self.dayName = dayName
+        self.imageIconId = imageIconId
+        self._tempMin = tempMin
+        self._tempMax = tempMax
+    }
+}
+
 let weatherImageDict = [
     "01d" : "Sun",
     "01n" : "Moon",
@@ -85,7 +106,7 @@ struct ApiCall {
     
    
     static var DailyForecastWithLocation: String {
-        return BaseUrl + DailyForecast + Location + KeyPrefix + APIKey
+        return BaseUrl + Forecast + Location + KeyPrefix + APIKey
     }
 }
 
