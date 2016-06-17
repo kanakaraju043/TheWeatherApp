@@ -5,5 +5,6 @@ use_frameworks!
 
 target 'The Weather App' do
 pod 'Alamofire', '~> 3.4'
+
 end
 

@@ -9,14 +9,14 @@
 import Foundation
 
 typealias DownloadCompleted = ()->()
-var isMetric = false
+var isMetric = true
 struct ThreeHourForecastData {
     private(set) var dateWithTime: String!
     private(set) var imageIconId: String!
     private var temperatureK: Int!
     
     var temperature: String! {
-        return "\(temperatureK)º"
+        return "\(convertTemp(temperatureK))º"
     }
     
     init(dateTime: String, imageId: String, tempK: Int) {
@@ -33,10 +33,11 @@ struct DailyForecastData {
     private var _tempMax : Int!
     
     var tempMin : String? {
-        return "\(_tempMin)º"
+        
+        return "\(convertTemp(_tempMin))º"
     }
     var tempMax : String?{
-        return "\(_tempMax)º"
+        return "\(convertTemp(_tempMax))º"
     }
     
     init(dayName : String,imageIconId : String , tempMax : Int ,tempMin : Int) {
@@ -123,5 +124,12 @@ struct ApiCall {
         return BaseUrl + Forecast + Location + KeyPrefix + APIKey
     }
 }
-
+func convertTemp(temp : Int)->Int {
+    if isMetric {
+       return Int(temp - 273)
+    }else {
+        //T(K) × 9/5 - 459.67
+        return Int((temp*9/5)-(459))
+    }
+}
 

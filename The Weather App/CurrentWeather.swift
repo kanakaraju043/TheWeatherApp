@@ -33,14 +33,14 @@ class CurrentWeather : Weather {
     
     var temperature : String {
         let suffix = isMetric ? "C" : "F"
-        return "\(tempKelvin)°\(suffix)"
+        return "\(convertTemp(tempKelvin))°\(suffix)"
     }
     
     var maxTemperature : String {
-        return "\(maxTempKelvin)°"
+        return "\(convertTemp(maxTempKelvin))°"
     }
     var minTemperature : String {
-        return "\(minTempKelvin)°"
+        return "\(convertTemp(minTempKelvin))°"
     }
     
     //http://climate.umn.edu/snow_fence/components/winddirectionanddegreeswithouttable3.htm

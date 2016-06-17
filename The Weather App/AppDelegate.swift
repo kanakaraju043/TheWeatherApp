@@ -12,13 +12,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var navigationController : UINavigationController?
+    var viewController : UIViewController?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        if let barFont = UIFont(name: "Avenir Next", size: 21.0) {
+        if let barFont = UIFont(name: "Avenir Next", size: 18) {
             UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor(), NSFontAttributeName:barFont]
             UIBarButtonItem.appearance().setTitleTextAttributes([NSFontAttributeName: barFont], forState: UIControlState.Normal)
         }
+        
+        
+      
         return true
     }
 

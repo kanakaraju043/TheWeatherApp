@@ -16,12 +16,36 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Downpour" translatesAutoresizingMaskIntoConstraints="NO" id="qXB-0C-yCH">
+                                <rect key="frame" x="191" y="250" width="33" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="33" id="jXH-YR-FAI"/>
+                                    <constraint firstAttribute="height" constant="35" id="uje-uf-rlW"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DetWeather" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVj-xt-g32">
+                                <rect key="frame" x="191" y="278" width="219" height="44"/>
+                                <fontDescription key="fontDescription" name="ArialRoundedMTBold" family="Arial Rounded MT Bold" pointSize="38"/>
+                                <color key="textColor" red="0.1843137255" green="0.27058823529999998" blue="0.52549019610000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="wVj-xt-g32" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="F5m-WN-4U7"/>
+                            <constraint firstItem="wVj-xt-g32" firstAttribute="leading" secondItem="qXB-0C-yCH" secondAttribute="leading" id="Z4U-DG-q9Y"/>
+                            <constraint firstItem="wVj-xt-g32" firstAttribute="top" secondItem="qXB-0C-yCH" secondAttribute="bottom" constant="-7.5" id="dYg-p7-XZC"/>
+                            <constraint firstItem="wVj-xt-g32" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="uaw-R1-97d"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="-55" y="221"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Downpour" width="33" height="33"/>
+    </resources>
 </document>

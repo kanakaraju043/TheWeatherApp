@@ -8,9 +8,9 @@
 
 import UIKit
 import Alamofire
-import iAd
 import CoreLocation
 import MapKit
+
 class ViewController: UIViewController{
     
     @IBOutlet weak var cityNameLabel: UILabel!
@@ -26,8 +26,6 @@ class ViewController: UIViewController{
     @IBOutlet weak var atmosphericPressureLabel: UILabel!
     @IBOutlet weak var highLowLabel: UILabel!
     @IBOutlet weak var cloudPercentageLabel: UILabel!
-    @IBOutlet weak var metricSwitch: UISwitch!
-    @IBOutlet weak var banner: ADBannerView!
     @IBOutlet weak var tableView: UITableView!
     
     var currentWeather : CurrentWeather?
@@ -35,13 +33,17 @@ class ViewController: UIViewController{
     var dailyWeather : DailyWeather?
     var isUpdated = false
     var locationManager : CLLocationManager!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let cond =  NSUserDefaults.standardUserDefaults().valueForKey("state") as? Bool {
+            isMetric = cond
+        }
         isUpdated = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
-        
+       
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -52,10 +54,10 @@ class ViewController: UIViewController{
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestLocation()
-        canDisplayBannerAds = true
         
     }
     func updateUIWithLocalData() {
+      
         func getWeekDayName() -> String {
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "EEEE"
@@ -120,9 +122,15 @@ class ViewController: UIViewController{
     }
     
     
+    @IBAction func settings(sender : AnyObject) {
+        print("asdasd")
+        performSegueWithIdentifier("settings", sender: nil)
     
+    }
 
-    
+    @IBAction func unwindToVC(segue: UIStoryboardSegue) {
+        updateUI()
+    }
     
     
 }
@@ -132,7 +140,7 @@ extension ViewController : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if let location = locations.first{
-            
+            if !isUpdated {
                 print("______________________________________________________________")
                 let latitude = location.coordinate.latitude
                 let longitude = location.coordinate.longitude
@@ -146,6 +154,9 @@ extension ViewController : CLLocationManagerDelegate {
                     self.isUpdated = true
                     self.updateUI()
                 })
+                
+            
+            }
             
             
         }
@@ -157,7 +168,7 @@ extension ViewController : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
-            locationManager.stopUpdatingLocation()
+            locationManager.startUpdatingLocation()
         }
     }
     
