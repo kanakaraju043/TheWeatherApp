@@ -16,7 +16,7 @@ class DailyForecastTableViewCell: UITableViewCell {
     @IBOutlet weak var lowTemperature: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-      
+        self.selectionStyle = .None
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -26,7 +26,7 @@ class DailyForecastTableViewCell: UITableViewCell {
     
     func configureCell(dailyForecastData : DailyForecastData) {
         if let hightTemperature = dailyForecastData.tempMax {
-            self.hightTemperature.text = hightTemperature
+            self.hightTemperature.text = hightTemperature 
         }
         if let dayName = dailyForecastData.dayName {
             self.dayNameLabel.text = dayName

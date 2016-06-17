@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9980B7C11D137FC3006408D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9980B7C01D137FC3006408D9 /* iAd.framework */; };
 		999A08EC1D0FF07A0065C9BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */; };
 		999A08F11D0FF07A0065C9BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 999A08EF1D0FF07A0065C9BA /* Main.storyboard */; };
 		999A08F31D0FF07A0065C9BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 999A08F21D0FF07A0065C9BA /* Assets.xcassets */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Weather_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9980B7C01D137FC3006408D9 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		999A08E81D0FF07A0065C9BA /* The Weather App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Weather App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		999A08ED1D0FF07A0065C9BA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "The Weather App/ViewController.swift"; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9980B7C11D137FC3006408D9 /* iAd.framework in Frameworks */,
 				99D40DA31D1233FB0011E1E8 /* Pods_The_Weather_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,7 +87,6 @@
 		999A08DF1D0FF07A0065C9BA = {
 			isa = PBXGroup;
 			children = (
-				99D40DA01D1233FB0011E1E8 /* Alamofire.framework */,
 				999A08EA1D0FF07A0065C9BA /* The Weather App */,
 				999A08E91D0FF07A0065C9BA /* Products */,
 				2319DA3716475546B0013E56 /* Pods */,
@@ -155,6 +157,8 @@
 		D969EBC628307344B01C1705 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				99D40DA01D1233FB0011E1E8 /* Alamofire.framework */,
+				9980B7C01D137FC3006408D9 /* iAd.framework */,
 				803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */,
 			);
 			name = Frameworks;

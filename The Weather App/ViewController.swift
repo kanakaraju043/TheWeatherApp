@@ -35,13 +35,13 @@ class ViewController: UIViewController{
     var dailyWeather : DailyWeather?
     var isUpdated = false
     var locationManager : CLLocationManager!
-    var startingLocation : CLLocation!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        isUpdated = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
+        
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -52,6 +52,7 @@ class ViewController: UIViewController{
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
         locationManager.requestLocation()
+        canDisplayBannerAds = true
         
     }
     func updateUIWithLocalData() {
@@ -120,14 +121,7 @@ class ViewController: UIViewController{
     
     
     
-    func bannerViewDidLoadAd(banner: ADBannerView!) {
-        banner.hidden = false
-    }
-    
-    func bannerView(banner: ADBannerView!, didFailToReceiveAdWithError error: NSError!) {
-        print(error.debugDescription)
-        banner.hidden = true
-    }
+
     
     
     
@@ -138,7 +132,7 @@ extension ViewController : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if let location = locations.first{
-            if !isUpdated {
+            
                 print("______________________________________________________________")
                 let latitude = location.coordinate.latitude
                 let longitude = location.coordinate.longitude
@@ -152,12 +146,6 @@ extension ViewController : CLLocationManagerDelegate {
                     self.isUpdated = true
                     self.updateUI()
                 })
-            }
-            
-        }
-        if startingLocation == nil {
-            startingLocation = locations.first
-        }else {
             
             
         }
@@ -169,7 +157,7 @@ extension ViewController : CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
-            locationManager.requestLocation()
+            locationManager.stopUpdatingLocation()
         }
     }
     
@@ -199,7 +187,7 @@ extension ViewController : UITableViewDelegate , UITableViewDataSource {
     }
     
 }
-
+//------------------------------------------------------------------------
 extension ViewController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

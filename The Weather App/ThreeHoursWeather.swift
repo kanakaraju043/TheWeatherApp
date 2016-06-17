@@ -19,6 +19,7 @@ class ThreeHoursWeather : Weather {
         Alamofire.request(.GET,url).responseJSON { (response) in
             self.threeHoursWeatherDatas.removeAll()
             if let dict = response.result.value as? [String : AnyObject] {
+               
                 if let listData = dict["list"] as? [[String : AnyObject]] {
                     for index in 0...counter {
                         var list = listData[index]

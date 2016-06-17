@@ -33,10 +33,10 @@ struct DailyForecastData {
     private var _tempMax : Int!
     
     var tempMin : String? {
-        return "\(_tempMin)"
+        return "\(_tempMin)º"
     }
     var tempMax : String?{
-        return "\(_tempMax)"
+        return "\(_tempMax)º"
     }
     
     init(dayName : String,imageIconId : String , tempMax : Int ,tempMin : Int) {
@@ -46,13 +46,24 @@ struct DailyForecastData {
         self._tempMax = tempMax
     }
 }
+let weatherDescriptionDict = [
+    "clear sky" : "Açık",
+    "few clouds" : "Az bulutlu",
+    "scattered clouds" : "Dağınk bulutlu",
+    "broken clouds" : "Parçalı bulutlu",
+    "shower rain" : "Kısa süreli yağmur",
+    "rain" : "Yağmurlu",
+    "thunderstorm" : "Sağanak yağış",
+    "snow" : "Karlı",
+    "mist" : "Sisli"
+]
 
 let weatherImageDict = [
     "01d" : "Sun",
-    "01n" : "Moon",
+    "01n" : "Bright Moon",
     
     "02d" : "Partly Cloudy Day",
-    "02n" : "Partly Cloudy Day",
+    "02n" : "Partly Cloudy Night",
     
     "03d" : "Clouds",
     "03n" : "Clouds",
@@ -73,7 +84,10 @@ let weatherImageDict = [
     "13n" : "Snow",
     
     "50d" : "Fog Day",
-    "50n" : "Fog Night"]
+    "50n" : "Fog Night"
+
+
+]
 
 
 // Standard path is BaseUrl + Weather/Forecast/WeekForecast + City/Location + KeyPrefix 

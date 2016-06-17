@@ -21,12 +21,14 @@ class ThreeHoursFCollectionViewCell: UICollectionViewCell {
     func configureCell(weatherData : ThreeHourForecastData){
         if let date = weatherData.dateWithTime {
             dateTimeLabel.text = date
+            
         }
         
         if let temp = weatherData.temperature {
             temperature.text = temp
         }
         if let iconImage = weatherImageDict[weatherData.imageIconId] {
+           
             weatherImage.image = UIImage(named : iconImage)
         }
     
