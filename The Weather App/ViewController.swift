@@ -13,6 +13,7 @@ import MapKit
 
 class ViewController: UIViewController{
     
+    @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var countryNameLabel: UILabel!
     @IBOutlet weak var mainTempImage: UIImageView!
@@ -36,25 +37,41 @@ class ViewController: UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let cond =  NSUserDefaults.standardUserDefaults().valueForKey("state") as? Bool {
-            isMetric = cond
-        }
-        isUpdated = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.showsVerticalScrollIndicator = false
+    
+            if let cond =  NSUserDefaults.standardUserDefaults().valueForKey("state") as? Bool {
+                isMetric = cond
+            }
+            isUpdated = false
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.showsVerticalScrollIndicator = false
+            
+            
+            collectionView.delegate = self
+            collectionView.dataSource = self
+            collectionView.backgroundColor = UIColor.whiteColor()
+            
+            locationManager = CLLocationManager()
+            locationManager.delegate = self
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+            containerView.hidden = true
+
        
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.whiteColor()
-        
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
-        locationManager.requestLocation()
-        
+    }
+    override func viewDidAppear(animated: Bool) {
+        if !Reachability.isConnectedToNetwork() {
+            containerView.hidden = true
+            showInternetError()
+        }else {
+            containerView.hidden = false
+        }
+    }
+    func showInternetError(){
+        let alert = UIAlertController(title: "Internet bağlantısı yok!", message: "Lütfen internet bağlantınızı kontrol ediniz.", preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
     }
     func updateUIWithLocalData() {
       
@@ -116,6 +133,7 @@ class ViewController: UIViewController{
                     print(cityName)
                     completion(cityName: cityName)
                 }
+                print(placemark)
             }
         }
         
@@ -123,7 +141,7 @@ class ViewController: UIViewController{
     
     
     @IBAction func settings(sender : AnyObject) {
-        print("asdasd")
+        
         performSegueWithIdentifier("settings", sender: nil)
     
     }
@@ -146,13 +164,15 @@ extension ViewController : CLLocationManagerDelegate {
                 let longitude = location.coordinate.longitude
                 getCityName(location, completion: { (cityName) in
                     ApiCall.City = "q=\(cityName)"
-                    self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeather)
                     ApiCall.Location = "lat=\(latitude)&lon=\(longitude)"
+                    self.currentWeather = CurrentWeather(url: ApiCall.CurrentWeatherWithLocation)
+                    
                     self.threeHoursWeather = ThreeHoursWeather(url: ApiCall.ThreeHourForecastWithLocation)
                     self.dailyWeather = DailyWeather(url: ApiCall.DailyForecastWithLocation)
                     
                     self.isUpdated = true
                     self.updateUI()
+                self.containerView.hidden = false
                 })
                 
             
@@ -169,6 +189,25 @@ extension ViewController : CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status == .AuthorizedWhenInUse {
             locationManager.startUpdatingLocation()
+        }else if status == .Denied {
+            print("Denied")
+            let alertController = UIAlertController(
+                title: "Uygulamaya izin vermediniz!",
+                message: "Hava durumunu öğrenebilmek için lütfen ayarlardan konum erişimine izin veriniz!",
+                preferredStyle: .Alert)
+            
+            let cancelAction = UIAlertAction(title: "İptal", style: .Cancel, handler: nil)
+            alertController.addAction(cancelAction)
+            
+            let openAction = UIAlertAction(title: "Ayarları Aç", style: .Default) { (action) in
+                if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
+                    UIApplication.sharedApplication().openURL(url)
+                }
+            }
+            alertController.addAction(openAction)
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+            
         }
     }
     

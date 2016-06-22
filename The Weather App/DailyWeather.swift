@@ -16,14 +16,14 @@ class DailyWeather : Weather {
             if let dict = response.result.value as? [String : AnyObject] {
                 self.dailyForecastDatas.removeAll()
                 if let listData = dict["list"] as? [[String : AnyObject]] {
-                    print(listData)
+                    
                     for  i in 0..<listData.count {
                         let list = listData[i]
                         if let utcTime = list["dt"] as? Int {
                             let date = NSDate(timeIntervalSince1970: Double(utcTime))
                             let component = NSCalendar.currentCalendar().component(.Hour, fromDate: date)
                             
-                            print(component)
+                           
                             if component == 15 {
                               
                                 let dateFormatter = NSDateFormatter()

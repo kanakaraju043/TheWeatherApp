@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		99305FB21D1432E7008F2416 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99305FB11D1432E7008F2416 /* SettingsTableViewController.swift */; };
+		99460C581D1B399D009B77F7 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99460C571D1B399D009B77F7 /* Reachability.swift */; };
 		9980B7C11D137FC3006408D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9980B7C01D137FC3006408D9 /* iAd.framework */; };
 		999A08EC1D0FF07A0065C9BA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */; };
 		999A08F11D0FF07A0065C9BA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 999A08EF1D0FF07A0065C9BA /* Main.storyboard */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		803E24F9795378906AA0114F /* Pods_The_Weather_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Weather_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		99305FB11D1432E7008F2416 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		99460C571D1B399D009B77F7 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		9980B7C01D137FC3006408D9 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		999A08E81D0FF07A0065C9BA /* The Weather App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Weather App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +112,6 @@
 				99F0E0A91D11D8730003B581 /* Model */,
 				99F0E0A01D1189620003B581 /* View */,
 				99F0E09F1D11895C0003B581 /* Controller */,
-				99F0E0A51D11989A0003B581 /* Constants.swift */,
 				99F0E0A21D118D7C0003B581 /* Other */,
 			);
 			path = "The Weather App";
@@ -139,9 +140,11 @@
 		99F0E0A21D118D7C0003B581 /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				99F0E0A51D11989A0003B581 /* Constants.swift */,
 				999A08EB1D0FF07A0065C9BA /* AppDelegate.swift */,
 				999A08F71D0FF07A0065C9BA /* Info.plist */,
 				999A08F21D0FF07A0065C9BA /* Assets.xcassets */,
+				99460C571D1B399D009B77F7 /* Reachability.swift */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -303,6 +306,7 @@
 				99F0E0AD1D11D8D90003B581 /* CurrentWeather.swift in Sources */,
 				99F0E0A41D1193CF0003B581 /* DailyForecastTableViewCell.swift in Sources */,
 				99305FB21D1432E7008F2416 /* SettingsTableViewController.swift in Sources */,
+				99460C581D1B399D009B77F7 /* Reachability.swift in Sources */,
 				99F0E0AB1D11D8800003B581 /* Weather.swift in Sources */,
 				99F0E0A61D11989A0003B581 /* Constants.swift in Sources */,
 				99F0E0B31D120BEF0003B581 /* ThreeHoursWeather.swift in Sources */,

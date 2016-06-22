@@ -48,7 +48,7 @@ struct DailyForecastData {
     }
 }
 let weatherDescriptionDict = [
-    "clear sky" : "Güneşli",
+    "clear sky" : "Açık",
     "few clouds" : "Az bulutlu",
     "scattered clouds" : "Dağınk bulutlu",
     "broken clouds" : "Parçalı bulutlu",
