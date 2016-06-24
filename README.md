@@ -1,6 +1,6 @@
 # TheWeatherApp
 
-![screen 1](https://github.com/yusufkildan/TheWeatherApp/AppPhotos/image1.png)
+![screen 1](https://github.com/yusufkildan/TheWeatherApp/blob/master/AppPhotos/image1.png)
 
 
 
